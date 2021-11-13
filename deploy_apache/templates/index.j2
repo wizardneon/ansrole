@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<title>{{inventory_hostname}}</title>
+</head>
+<body>
+<div id='header'>
+<a href=https://www.youtube.com/watch?v=xvFZjo5PgG0><img src="bird.png" alt="header"/>Добро пожаловать на server : {{inventory_hostname}}</a>
+	</div>
+<div id='content'>
+	<p>Данный сервер развернут на {{ ansible_os_family }}.</p>
+</div>
+<div id='footer'>
+IP Address of this server is: {{inventory_hostname}}    
+
+
+
+</div>
+</body>
+</html>

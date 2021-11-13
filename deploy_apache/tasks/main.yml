@@ -1,0 +1,50 @@
+---
+- block: # Block for "RedHat"
+
+    - name: install firewalld
+      yum: name=firewalld state=latest
+
+    - name: start firewalld
+      systemd:
+        name: firewalld
+        state: reloaded
+
+    - name: open port 80
+      firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+        immediate: true
+      vars:
+        ansible_python_interpreter: '/usr/bin/python2'
+
+    - name: install apache
+      yum: name=httpd state=latest
+
+    - name: Start Apache Webserver & Enable every boot
+      service: name=httpd state=started enabled=yes
+  when: ansible_os_family == "RedHat"
+
+- block: # Block for Ubuntu
+
+    - name: install apache
+      yum: name=apache2 state=latest
+
+    - name: Start Apache Webserver & Enable every boot
+      service: name=apache2 state=started enabled=yes
+  when: ansible_os_family == "Debian"
+
+
+- name: Generate index.html file
+  template: src=index.j2 dest={{destin_folder}}/index.html mode=0555
+
+- name: Copy my HomePage file to Server
+  copy: src={{item}} dest={{ destin_folder }} mode=0555
+  loop:
+    - "bird.png"   
+    - "footer.jpg"
+    - "header.jpg"
+    - style.css 
+  notify: 
+    - Restart Apache RedHat
+    - Restart Apache Debian 
