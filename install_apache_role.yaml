@@ -1,0 +1,11 @@
+---
+- name: install apache and open port hhtp
+  hosts: all
+  gather_facts: true
+  become: yes
+  become_method: sudo
+  become_user: root
+
+
+  roles: 
+      - deploy_apache
